@@ -19,8 +19,6 @@ FSJS project 2 - List Filter and Pagination
 
 const studentList = document.querySelectorAll('.student-item');
 const itemsPerPage = 10;
-const numberOfPagesNeed = Math.ceil(studentList.length / itemsPerPage);
-
 
 
 /*** 
@@ -43,8 +41,9 @@ function showPage(list, page) {
    let endIndex = page * itemsPerPage - 1;
 
    for(let i = 0; i < list.length; i++){
+      list[i].style.display = 'none';
       if(i >= startIndex && i <= endIndex){
-         console.log(list[i])
+         list[i].style.display = 'list-item';
       }
    }
 }
@@ -52,13 +51,14 @@ function showPage(list, page) {
 showPage(studentList, 1);
 
 
-
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
 
-function appendPageLinks() {
+function appendPageLinks(list) {
+      const numberOfPagesNeed = Math.ceil(studentList.length / itemsPerPage);
+
       let parentDiv = document.getElementsByClassName('page')[0];
       let div = document.createElement('div');
       div.setAttribute('class', 'pagination')
@@ -69,15 +69,38 @@ function appendPageLinks() {
       for(let i = 1; i <= numberOfPagesNeed; i++){
       let li = document.createElement('li');
       ul.appendChild(li);
+      li.setAttribute('class', 'active');
       let a = document.createElement('a');
       li.appendChild(a);
-      a.setAttribute('class', 'active');
       a.setAttribute('href', "#")
       a.textContent = i; 
+
+      li.addEventListener('click', (e) => {
+         let active = event.target;
+         if(active){
+            li.className = 'active';
+         } 
+      });
+
+      let pageValue; 
+
+      a.addEventListener('click', (e) => {
+         pageValue = a.textContent;  
+         showPage(studentList, pageValue);
+         
+                
+      });
+      
    }
  }
 
-appendPageLinks();
+appendPageLinks(studentList);
+
+
+
+
+
+
 
 
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
