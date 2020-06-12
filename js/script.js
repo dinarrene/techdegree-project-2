@@ -46,6 +46,8 @@ function showPage(list, page) {
          list[i].style.display = 'list-item';
       }
    }
+
+   
 }
 
 showPage(studentList, 1);
@@ -68,30 +70,31 @@ function appendPageLinks(list) {
 
       for(let i = 1; i <= numberOfPagesNeed; i++){
       let li = document.createElement('li');
-      ul.appendChild(li);
-      li.setAttribute('class', 'active');
+      ul.appendChild(li); 
+      ul.firstElementChild.setAttribute('class', 'active');
       let a = document.createElement('a');
       li.appendChild(a);
       a.setAttribute('href', "#")
       a.textContent = i; 
 
-      li.addEventListener('click', (e) => {
-         let active = event.target;
-         if(active){
-            li.className = 'active';
-         } 
-      });
-
-      let pageValue; 
-
       a.addEventListener('click', (e) => {
-         pageValue = a.textContent;  
-         showPage(studentList, pageValue);
-         
-                
+         let pageValue; 
+         pageValue = a.textContent; 
+         showPage(studentList, pageValue); 
+
       });
-      
    }
+
+   ul.addEventListener('click', (e) => {
+      let active = document.querySelector('.active')
+      if(active){
+      active.removeAttribute('class')
+      }
+      let li = event.target.parentNode;
+      li.setAttribute('class', 'active');
+   });
+
+   
  }
 
 appendPageLinks(studentList);
