@@ -21,6 +21,49 @@ const studentList = document.querySelectorAll('.student-item');
 const itemsPerPage = 10;
 
 
+
+function searchField(){
+   let headerDiv = document.getElementsByClassName('page-header')[0];
+   let searchDiv = document.createElement('div');
+   headerDiv.appendChild(searchDiv);
+   searchDiv.setAttribute('class', 'student-search');
+   let input = document.createElement('input');
+   searchDiv.appendChild(input);
+   input.setAttribute('placeholder', 'Search for students...');
+   let button = document.createElement('button');
+   searchDiv.appendChild(button);
+   button.textContent = 'Search';
+}
+
+searchField();
+
+const search = document.querySelector('input');
+const submit = document.querySelector('button');
+
+function searchFunc(searchInput, list) {
+   for(let i = 0; i < list.length; i++) {
+      list[i].style.display = 'none';
+      if(list[i].textContent.toLowerCase().includes(searchInput.value.toLowerCase())){
+         list[i].style.display = 'list-item';
+      } 
+      if(searchInput.value.length == 0){
+         let pageNum = parseInt(document.querySelector('.active').textContent);
+         showPage(studentList, pageNum);
+      }
+   } 
+}
+
+submit.addEventListener('click', (e) =>{
+   e.preventDefault();
+   searchFunc(search, studentList);
+});
+
+search.addEventListener('keyup', () => {
+   searchFunc(search, studentList);
+});
+
+
+
 /*** 
    Create the `showPage` function to hide all of the items in the 
    list except for the ten you want to show.
@@ -45,18 +88,16 @@ function showPage(list, page) {
       if(i >= startIndex && i <= endIndex){
          list[i].style.display = 'list-item';
       }
-   }
-
-   
+   }  
 }
-
-showPage(studentList, 1);
 
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
+
+
 
 function appendPageLinks(list) {
       const numberOfPagesNeed = Math.ceil(studentList.length / itemsPerPage);
@@ -71,12 +112,12 @@ function appendPageLinks(list) {
       for(let i = 1; i <= numberOfPagesNeed; i++){
       let li = document.createElement('li');
       ul.appendChild(li); 
-      ul.firstElementChild.setAttribute('class', 'active');
+      
       let a = document.createElement('a');
       li.appendChild(a);
+      ul.childNodes[0].childNodes[0].setAttribute('class', 'active');
       a.setAttribute('href', "#")
       a.textContent = i; 
-
       a.addEventListener('click', (e) => {
          let pageValue; 
          pageValue = a.textContent; 
@@ -86,16 +127,18 @@ function appendPageLinks(list) {
    }
 
    ul.addEventListener('click', (e) => {
-      let active = document.querySelector('.active')
-      if(active){
-      active.removeAttribute('class')
+      let activeLink = document.querySelector('.active')
+      if(activeLink){
+      activeLink.removeAttribute('class')
       }
-      let li = event.target.parentNode;
-      li.setAttribute('class', 'active');
+      let a = event.target;
+      a.setAttribute('class', 'active');
    });
-
-   
  }
+
+
+
+showPage(studentList, 1);
 
 appendPageLinks(studentList);
 
