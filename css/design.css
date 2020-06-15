@@ -95,6 +95,14 @@ body{
     border-bottom: none;
   }
 
+  .no-records{
+    text-align: center;
+    font-size: 22px;
+    padding-top: 55px;
+    font-weight: bold;
+    color: #4ba6c3;
+  }
+
 .pagination{
   margin: 40px 0 0 0;
   text-align: center;

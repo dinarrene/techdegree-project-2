@@ -33,6 +33,11 @@ function showPage(list, page) {
 ***/
 
 function appendPageLinks(list) {
+      if(document.querySelector('div.pagination')){
+         let initialPageNumbers = document.querySelector('div.pagination');
+         initialPageNumbers.remove();
+      }
+
       const numberOfPagesNeed = Math.ceil(list.length / itemsPerPage);
 
       let parentDiv = document.getElementsByClassName('page')[0];
@@ -91,30 +96,38 @@ const search = document.querySelector('input');
 const submit = document.querySelector('button');
 
 /*** 
+   Create/append "No records from search" message
+***/
+
+let parentDiv = document.getElementsByClassName('page')[0];
+let messageDiv = document.createElement('div');
+parentDiv.appendChild(messageDiv);
+messageDiv.setAttribute('class', 'no-records');
+messageDiv.textContent = "We couldn't find any records that match your search.";
+messageDiv.style.display = 'none';
+
+/*** 
    searchFunc shows list results matching input query, or prints "no match" message if no records match
 ***/
 
 function searchFunc(searchInput, searchList, displayList) { 
    let searchResults = [];
    let pageNum;   
+   pageNum = parseInt(document.querySelector('.active').textContent); 
+
    for(let i = 0; i < searchList.length; i++) {
       displayList[i].style.display = 'none';
       if(searchList[i].textContent.toLowerCase().includes(searchInput.value.toLowerCase())){
          displayList[i].style.display = 'list-item';
-         searchResults.push(displayList[i])  
-      } 
-      if(searchInput.value.length == 0){
-         pageNum = parseInt(document.querySelector('.active').textContent); 
-         showPage(studentList, pageNum);     
-      }  
+         searchResults.push(displayList[i]) 
+      } else if(searchResults.length === 0){
+         messageDiv.style.display = 'block';
+      } else {
+         messageDiv.style.display = 'none';
+      }
    } 
-   if(searchResults.length === 0){
-      let parentDiv = document.getElementsByClassName('page')[0];
-      let div = document.createElement('div');
-      parentDiv.appendChild(div);
-      div.textContent = "We couldn't find any records that match your search.";
-   }
-
+  
+   showPage(searchResults, pageNum);
    appendPageLinks(searchResults);
    console.log(searchResults);
 }
