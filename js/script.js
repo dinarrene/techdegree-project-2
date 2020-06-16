@@ -107,18 +107,15 @@ messageDiv.textContent = "We couldn't find any records that match your search.";
 messageDiv.style.display = 'none';
 
 /*** 
-   searchFunc shows list results matching input query, or prints "no match" message if no records match
+   searchFunc shows list results matching input query, or prints "no match" message if no records match 
 ***/
 
 function searchFunc(searchInput, searchList, displayList) { 
    let searchResults = [];
-   let pageNum;   
-   pageNum = parseInt(document.querySelector('.active').textContent); 
-
+  
    for(let i = 0; i < searchList.length; i++) {
       displayList[i].style.display = 'none';
       if(searchList[i].textContent.toLowerCase().includes(searchInput.value.toLowerCase())){
-         displayList[i].style.display = 'list-item';
          searchResults.push(displayList[i]) 
       } else if(searchResults.length === 0){
          messageDiv.style.display = 'block';
@@ -127,9 +124,8 @@ function searchFunc(searchInput, searchList, displayList) {
       }
    } 
   
-   showPage(searchResults, pageNum);
+   showPage(searchResults, 1);
    appendPageLinks(searchResults);
-   console.log(searchResults);
 }
 
 submit.addEventListener('click', (e) =>{
